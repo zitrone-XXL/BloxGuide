@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blox Fruits руководство</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333;
+            --header-bg: #ffffff;
+            --card-bg: #fff;
+            --card-border: #e0e0e0;
+            --card-hover-border: #3498db;
+            --title-color: #2c3e50;
+            --content-color: #666;
+            --input-bg: #fff;
+            --input-border: #ccc;
+            --input-focus-border: #3498db;
+            --search-icon-color: #999;
+            --modal-bg: #fff;
+            --modal-overlay: rgba(0,0,0,0.5);
+            --form-bg: #fff;
+            --warning-bg: #fff3cd;
+            --warning-border: #ffc107;
+            --warning-text: #856404;
+            --error-color: #e74c3c;
+            --section-hover-shadow: rgba(0,0,0,0.1);
+            --arrow-color: #999;
+            --no-sections-color: #999;
+            --loading-color: #666;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --header-bg: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --card-border: #444;
+            --card-hover-border: #3498db;
+            --title-color: #ecf0f1;
+            --content-color: #b0b0b0;
+            --input-bg: #2d2d2d;
+            --input-border: #555;
+            --input-focus-border: #3498db;
+            --search-icon-color: #aaa;
+            --modal-bg: #2d2d2d;
+            --modal-overlay: rgba(0,0,0,0.7);
+            --form-bg: #2d2d2d;
+            --warning-bg: #3d3520;
+            --warning-border: #856404;
+            --warning-text: #f0c040;
+            --error-color: #e74c3c;
+            --section-hover-shadow: rgba(0,0,0,0.3);
+            --arrow-color: #aaa;
+            --no-sections-color: #888;
+            --loading-color: #aaa;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            background-color: var(--header-bg);
+            transition: background-color 0.3s;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--title-color);
+            margin: 0;
+            transition: color 0.3s;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid var(--input-border);
+            border-radius: 20px;
+            outline: none;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        .search-input:focus {
+            border-color: var(--input-focus-border);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            fill: var(--search-icon-color);
+        }
+
+        .round-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f1c40f;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .round-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        /* Переключатель темы */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3498db;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Контейнер разделов для пользователей */
+        .public-sections {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+            margin-bottom: 20px;
+        }
+
+        .section-item:hover {
+            box-shadow: 0 4px 12px var(--section-hover-shadow);
+            border-color: var(--card-hover-border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: var(--title-color);
+            flex-grow: 1;
+            transition: color 0.3s;
+        }
+
+        .section-arrow {
+            width: 20px;
+            height: 20px;
+            fill: var(--arrow-color);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        .section-item.expanded .section-arrow {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, margin-top 0.3s ease-out;
+            margin-top: 0;
+        }
+
+        .section-item.expanded .section-content {
+            max-height: 500px;
+            margin-top: 15px;
+        }
+
+        .section-content p {
+            margin: 0;
+            color: var(--content-color);
+            line-height: 1.6;
+            padding-top: 15px;
+            border-top: 1px solid var(--card-border);
+            transition: color 0.3s, border-color 0.3s;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .edit-section-btn, .delete-section-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .edit-section-btn {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .edit-section-btn:hover {
+            background: #2980b9;
+        }
+
+        .delete-section-btn {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .delete-section-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Модальное окно */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--modal-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .modal h3 {
+            margin: 0 0 20px 0;
+            color: var(--title-color);
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        .modal input:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: #2980b9;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--search-icon-color);
+            transition: color 0.3s;
+        }
+
+        .error-msg {
+            color: var(--error-color);
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Админ панель */
+        .admin-panel {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-title {
+            font-size: 2rem;
+            color: var(--title-color);
+            transition: color 0.3s;
+        }
+
+        .admin-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .admin-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-btn {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .add-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .back-home-btn {
+            background: #95a5a6;
+            color: #fff;
+        }
+
+        .back-home-btn:hover {
+            background: #7f8c8d;
+        }
+
+        /* Форма редактирования */
+        .edit-form {
+            display: none;
+            background: var(--form-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .edit-form.active {
+            display: block;
+        }
+
+        .edit-form h3 {
+            margin: 0 0 20px 0;
+            color: var(--title-color);
+            transition: color 0.3s;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--title-color);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            font-family: inherit;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-btn, .cancel-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .save-btn {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .save-btn:hover {
+            background: #229954;
+        }
+
+        .cancel-btn {
+            background: #95a5a6;
+            color: #fff;
+        }
+
+        .cancel-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--loading-color);
+            transition: color 0.3s;
+        }
+
+        .attempts-warning {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            color: var(--warning-text);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+            display: none;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .attempts-warning.visible {
+            display: block;
+        }
+
+        .no-sections {
+            text-align: center;
+            color: var(--no-sections-color);
+            padding: 40px;
+            transition: color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="round-btn" id="lemonBtn"></button>
+        <h1>Blox Fruits руководство</h1>
+        
+        <div class="theme-toggle">
+            <span class="theme-label">☀️</span>
+            <label class="switch">
+                <input type="checkbox" id="themeSwitch">
+                <span class="slider"></span>
+            </label>
+            <span class="theme-label">🌙</span>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Поиск раздела...">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- Разделы для обычных пользователей -->
+    <div class="public-sections" id="publicSections">
+        <div class="no-sections">Разделы не найдены</div>
+    </div>
+
+    <!-- Админ панель -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2 class="admin-title">Админ панель</h2>
+        </div>
+
+        <div class="admin-buttons">
+            <button class="admin-btn add-btn" id="addSectionBtn">+ Добавить раздел</button>
+            <button class="admin-btn back-home-btn" id="backHomeBtn">На главную</button>
+        </div>
+
+        <div class="edit-form" id="editForm">
+            <h3 id="formTitle">Новый раздел</h3>
+            <div class="form-group">
+                <label>Название раздела:</label>
+                <input type="text" id="sectionName" placeholder="Введите название">
+            </div>
+            <div class="form-group">
+                <label>Описание:</label>
+                <textarea id="sectionContent" placeholder="Введите описание раздела"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="save-btn" id="saveBtn">Сохранить</button>
+                <button class="cancel-btn" id="cancelBtn">Отмена</button>
+            </div>
+        </div>
+
+        <div class="sections-list" id="adminSectionsList"></div>
+    </div>
+
+    <!-- Модальное окно для кода -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h3 id="modalTitle">Введите код доступа</h3>
+            <div class="attempts-warning" id="attemptsWarning">
+                Осталось попыток: <span id="attemptsLeft">2</span>
+            </div>
+            <input type="password" id="adminCode" placeholder="Введите код" maxlength="4">
+            <button class="modal-btn" id="submitCode">Войти</button>
+            <div class="error-msg" id="errorMsg">Неверный код</div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_CODE = '6854';
+        let sections = [];
+        let editingId = null;
+        let wrongAttempts = 0;
+        let isAdminMode = false;
+
+        // Элементы DOM
+        const lemonBtn = document.getElementById('lemonBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const adminCodeInput = document.getElementById('adminCode');
+        const submitCode = document.getElementById('submitCode');
+        const errorMsg = document.getElementById('errorMsg');
+        const modalTitle = document.getElementById('modalTitle');
+        const attemptsWarning = document.getElementById('attemptsWarning');
+        const attemptsLeft = document.getElementById('attemptsLeft');
+        const adminPanel = document.getElementById('adminPanel');
+        const publicSections = document.getElementById('publicSections');
+        const addSectionBtn = document.getElementById('addSectionBtn');
+        const backHomeBtn = document.getElementById('backHomeBtn');
+        const editForm = document.getElementById('editForm');
+        const formTitle = document.getElementById('formTitle');
+        const sectionName = document.getElementById('sectionName');
+        const sectionContent = document.getElementById('sectionContent');
+        const saveBtn = document.getElementById('saveBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const adminSectionsList = document.getElementById('adminSectionsList');
+        const searchInput = document.getElementById('searchInput');
+        const themeSwitch = document.getElementById('themeSwitch');
+
+        // Загрузка темы
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeSwitch.checked = true;
+            }
+        }
+
+        // Сохранение темы
+        function saveTheme(theme) {
+            localStorage.setItem('theme', theme);
+        }
+
+        // Переключение темы
+        themeSwitch.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                saveTheme('dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                saveTheme('light');
+            }
+        });
+
+        // Загрузка данных из localStorage
+        function loadSections() {
+            sections = JSON.parse(localStorage.getItem('bloxSections')) || [];
+            renderPublicSections();
+            if (isAdminMode) {
+                renderAdminSections();
+            }
+        }
+
+        // Сохранение данных в localStorage
+        function saveSections() {
+            localStorage.setItem('bloxSections', JSON.stringify(sections));
+        }
+
+        // Отрисовка разделов для обычных пользователей
+        function renderPublicSections() {
+            if (sections.length === 0) {
+                publicSections.innerHTML = '<div class="no-sections">Разделы не найдены</div>';
+                return;
+            }
+
+            publicSections.innerHTML = '';
+            sections.forEach(section => {
+                const item = document.createElement('div');
+                item.className = 'section-item';
+                item.innerHTML = `
+                    <div class="section-header">
+                        <h3>${section.name}</h3>
+                        <svg class="section-arrow" viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                        </svg>
+                    </div>
+                    <div class="section-content">
+                        <p>${section.content || 'Нет описания'}</p>
+                    </div>
+                `;
+                
+                item.addEventListener('click', () => {
+                    item.classList.toggle('expanded');
+                });
+                
+                publicSections.appendChild(item);
+            });
+        }
+
+        // Отрисовка разделов в админ-панели
+        function renderAdminSections() {
+            if (sections.length === 0) {
+                adminSectionsList.innerHTML = '<div class="no-sections">Разделы не найдены</div>';
+                return;
+            }
+
+            adminSectionsList.innerHTML = '';
+            sections.forEach(section => {
+                const item = document.createElement('div');
+                item.className = 'section-item';
+                item.innerHTML = `
+                    <div class="section-header">
+                        <h3>${section.name}</h3>
+                        <svg class="section-arrow" viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                        </svg>
+                    </div>
+                    <div class="section-content">
+                        <p>${section.content || 'Нет описания'}</p>
+                        <div class="section-actions">
+                            <button class="edit-section-btn" data-id="${section.id}">Редактировать</button>
+                            <button class="delete-section-btn" data-id="${section.id}">Удалить</button>
+                        </div>
+                    </div>
+                `;
+                
+                item.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('edit-section-btn') && 
+                        !e.target.classList.contains('delete-section-btn')) {
+                        item.classList.toggle('expanded');
+                    }
+                });
+                
+                adminSectionsList.appendChild(item);
+            });
+
+            document.querySelectorAll('.edit-section-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    editSection(parseInt(e.target.dataset.id));
+                });
+            });
+
+            document.querySelectorAll('.delete-section-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteSection(parseInt(e.target.dataset.id));
+                });
+            });
+        }
+
+        // Открытие модального окна
+        lemonBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            adminCodeInput.value = '';
+            errorMsg.style.display = 'none';
+            
+            if (isAdminMode) {
+                modalTitle.textContent = 'Введите код для выхода';
+                attemptsWarning.classList.add('visible');
+                attemptsLeft.textContent = 2 - wrongAttempts;
+            } else {
+                modalTitle.textContent = 'Введите код доступа';
+                attemptsWarning.classList.remove('visible');
+            }
+            
+            setTimeout(() => adminCodeInput.focus(), 100);
+        });
+
+        modalClose.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+
+        submitCode.addEventListener('click', checkCode);
+        adminCodeInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkCode();
+        });
+
+        function checkCode() {
+            const enteredCode = adminCodeInput.value;
+            
+            if (enteredCode === ADMIN_CODE) {
+                wrongAttempts = 0;
+                modalOverlay.classList.remove('active');
+                
+                if (!isAdminMode) {
+                    isAdminMode = true;
+                    adminPanel.classList.add('active');
+                    publicSections.style.display = 'none';
+                    renderAdminSections();
+                }
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                wrongAttempts++;
+                errorMsg.style.display = 'block';
+                adminCodeInput.value = '';
+                adminCodeInput.focus();
+                
+                if (isAdminMode) {
+                    if (wrongAttempts >= 2) {
+                        isAdminMode = false;
+                        wrongAttempts = 0;
+                        modalOverlay.classList.remove('active');
+                        adminPanel.classList.remove('active');
+                        publicSections.style.display = 'block';
+                        editForm.classList.remove('active');
+                        errorMsg.style.display = 'none';
+                        renderPublicSections();
+                        alert('Вы вышли из режима администратора');
+                    } else {
+                        attemptsLeft.textContent = 2 - wrongAttempts;
+                    }
+                } else {
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 2000);
+                }
+            }
+        }
+
+        backHomeBtn.addEventListener('click', () => {
+            adminPanel.classList.remove('active');
+            publicSections.style.display = 'block';
+            editForm.classList.remove('active');
+            isAdminMode = false;
+            wrongAttempts = 0;
+            renderPublicSections();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        addSectionBtn.addEventListener('click', () => {
+            editingId = null;
+            formTitle.textContent = 'Новый раздел';
+            sectionName.value = '';
+            sectionContent.value = '';
+            editForm.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function editSection(id) {
+            const section = sections.find(s => s.id === id);
+            if (section) {
+                editingId = id;
+                formTitle.textContent = 'Редактировать раздел';
+                sectionName.value = section.name;
+                sectionContent.value = section.content;
+                editForm.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function deleteSection(id) {
+            if (confirm('Вы уверены, что хотите удалить этот раздел?')) {
+                sections = sections.filter(s => s.id !== id);
+                saveSections();
+                renderAdminSections();
+                renderPublicSections();
+            }
+        }
+
+        saveBtn.addEventListener('click', () => {
+            const name = sectionName.value.trim();
+            const content = sectionContent.value.trim();
+
+            if (!name) {
+                alert('Введите название раздела');
+                return;
+            }
+
+            if (editingId) {
+                const section = sections.find(s => s.id === editingId);
+                if (section) {
+                    section.name = name;
+                    section.content = content;
+                }
+            } else {
+                const newId = sections.length > 0 ? Math.max(...sections.map(s => s.id)) + 1 : 1;
+                sections.push({ id: newId, name, content });
+            }
+
+            saveSections();
+            editForm.classList.remove('active');
+            renderAdminSections();
+            renderPublicSections();
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            editForm.classList.remove('active');
+        });
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+
+        // Поиск
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const sectionItems = document.querySelectorAll('.section-item');
+            
+            sectionItems.forEach(item => {
+                const title = item.querySelector('h3').textContent.toLowerCase();
+                if (searchTerm === '' || title.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Инициализация при загрузке
+        loadTheme();
+        loadSections();
+    </script>
+</body>
+</html>
